@@ -16,4 +16,5 @@ DIFF=$(($(date +%s) - $(cat "$MARKER")))
 marker=$(date -u -d "@$DIFF" +%H:%M:%S)
 
 sleep "$SLEEP"
-xdotool type "$marker"
+# some window managers need a short delay for xdotool to work
+xdotool sleep 0.15 type "$marker"
