@@ -1,0 +1,8 @@
+#!/bin/sh
+
+CDIR=${CDIR:-$HOME/.local/share/chaptermarker}
+MARKER=$CDIR/marker
+
+mkdir -p "$CDIR"
+
+date +%s > "$MARKER"

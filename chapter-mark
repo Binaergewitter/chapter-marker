@@ -1,0 +1,13 @@
+#!/bin/sh
+#  usage: chapter-mark [SLEEP]
+
+SLEEP=${1:-0}
+CDIR=${CDIR:-$HOME/.local/share/chaptermarker}
+MARKER=$CDIR/marker
+
+DIFF=$(($(date +%s) - $(cat "$MARKER")))
+
+marker=$(date -u -d "@$DIFF" +%H:%M:%S)
+
+sleep "$SLEEP"
+xdotool type "$marker"
