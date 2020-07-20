@@ -1,9 +1,15 @@
 #!/bin/sh
 #  usage: chapter-mark [SLEEP]
+set -euf
 
 SLEEP=${1:-0}
-CDIR=${CDIR:-$HOME/.local/share/chaptermarker}
+CDIR=${CDIR:-$HOME/.local/share/chapter-marker}
 MARKER=$CDIR/marker
+
+if ! test -e "$MARKER";then
+  echo "$MARKER does not exist, run chapter-mark first"
+  exit 1
+fi
 
 DIFF=$(($(date +%s) - $(cat "$MARKER")))
 
