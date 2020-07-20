@@ -17,4 +17,4 @@ marker=$(date -u -d "@$DIFF" +%H:%M:%S)
 
 sleep "$SLEEP"
 # some window managers need a short delay for xdotool to work
-xdotool sleep 0.15 type "$marker"
+xdotool sleep 0.15 type --clearmodifiers "$marker"
