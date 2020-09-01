@@ -1,4 +1,4 @@
-{ coreutils, fetchFromGitHub, makeWrapper, xdotool, stdenv, ... }:
+{ coreutils, fetchFromGitHub, makeWrapper, xclip, libnotify, stdenv, ... }:
 
 stdenv.mkDerivation rec {
   name = "chapter-marker-${version}";
@@ -16,7 +16,8 @@ stdenv.mkDerivation rec {
     let
       path = stdenv.lib.makeBinPath [
         coreutils
-        xdotool
+        xclip
+        libnotify
       ];
     in
     ''

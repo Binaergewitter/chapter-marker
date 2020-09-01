@@ -5,6 +5,7 @@ with pkgs;
 mkShell {
   buildInputs = [
     # put packages here.
-    xdotool
+    xclip
+    libnotify
   ];
 }
