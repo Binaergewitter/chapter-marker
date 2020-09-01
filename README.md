@@ -1,13 +1,13 @@
 # Chapter-marker
 
-Write the current time delta to your screen. To be used with hotkeys or with
-the sleep interval
+Write a chaptermark file for your podcast. The focus is the [binaergewitter podcast](https://blog.binaergewitter.de)
+Chapter-marker is to be used with hotkeys or with the sleep interval
 
 ## Workflow
 
 ```
 chapter-start   # wenn Ingo sagt "halli hallo und herzlich willkommen"
-chapter-mark  5 # maus in den browser neben die titelzeile oder mittels hotkey
+chapter-mark  # text, welcher für die chapter mark verwendet werden soll markieren
 ```
 
 ## Hotkey in your window manager
@@ -57,5 +57,5 @@ fragile, you must use your own brain unfortunately.
 ```bash
 cp chapter-* /usr/bin/
 chmod 755 /usr/bin/chapter-*
-# also install xdotool somehow ¯\_( ͡° ͜ʖ ͡°)_/¯
+# also install xclip,libnotify somehow ¯\_( ͡° ͜ʖ ͡°)_/¯
 ```

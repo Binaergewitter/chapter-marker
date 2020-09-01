@@ -1,8 +1,22 @@
 #!/bin/sh
+set -euf
 
 CDIR=${CDIR:-$HOME/.local/share/chapter-marker}
 MARKER=$CDIR/marker
+SHOW=$CDIR/show
+
+SHOW_NAME=${SHOW_NAME:-}
+date +%s > "$MARKER"
+
+if test -n "$SHOW_NAME";then
+  echo "$SHOW_NAME" > "$SHOW"
+else
+  notify-send "Retrieving bgt show" "\$SHOW_NAME not set - assuming this is a binaergewitter show\ngathering current show info from pad.binaergewitter.de"
+  curl https://pad.binaergewitter.de/ -v 2>&1 | sed -n 's/.*\/\(bgt[0-9]\+\)\r/\1/p' > "$SHOW"
+fi
+
+CHAPTER_FILE="$CDIR/$(cat "$SHOW")_chapters.txt"
 
 mkdir -p "$CDIR"
-echo "Set marker at $(date --rfc-3339=s)"
-date +%s > "$MARKER"
+notify-send "Chapter-marker start" "Set marker at $(date -d @"$(cat $MARKER)" --rfc-3339=s) for show $(cat "$SHOW")"
+echo "00:00:00.000 Hallihallo und Herzlich Willkommen" > "$CHAPTER_FILE"
