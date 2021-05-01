@@ -6,6 +6,7 @@ returns the id of the next bgt show
 
 import urllib.request
 
+
 def main():
     url = "https://pad.binaergewitter.de/"
     ret = urllib.request.urlopen(url)
