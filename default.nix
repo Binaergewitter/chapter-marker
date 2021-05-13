@@ -1,25 +1,19 @@
-{ coreutils, fetchFromGitHub, makeWrapper, xclip, libnotify, stdenv, ... }:
+{ pkgs ? import <nixpkgs> {}}:
 
-stdenv.mkDerivation rec {
-  name = "chapter-marker-${version}";
-  version = "master";
-  src = ./.;
-  buildInputs = [ makeWrapper ];
+with pkgs;
 
-  installPhase =
-    let
-      path = stdenv.lib.makeBinPath [
-        coreutils
-        xclip
-        libnotify
-      ];
-    in
-    ''
-      mkdir -p $out/bin
-      cp chapter-mark chapter-start $out/bin/
-      wrapProgram $out/bin/chapter-mark \
-        --prefix PATH : ${path}
-      wrapProgram $out/bin/chapter-start \
-        --prefix PATH : ${path}
-    '';
+pkgs.python3Packages.buildPythonPackage {
+  pname = "chapter-marker";
+  version = "1";
+  src = lib.cleanSource ./.;
+  propagatedBuildInputs = [
+    qt5.full
+    python3Packages.docopt
+    python3Packages.pyqt5
+    python3Packages.notify2
+    python3Packages.requests
+    python3Packages.pynput
+    vscode
+    qtcreator
+  ];
 }

@@ -35,6 +35,7 @@ from pynput import keyboard
 now = datetime.now
 
 import logging
+from . import resources
 
 log = logging.getLogger('chapter-tray')
 
@@ -64,13 +65,16 @@ class LeftClickMenu(QtWidgets.QMenu):
     def __init__(self, parent=None):
         QtWidgets.QMenu.__init__(self, "File", parent)
 
-        icon = QIcon("res/")
-
-        self.dateAction =  QtWidgets.QAction(icon, "Start Date", self)
+        self.dateAction =  QtWidgets.QAction(QIcon(":/icons/start-date.png"),
+                "Start Date", self)
         self.addAction(self.dateAction)
-        self.currentChapterAction = QtWidgets.QAction(icon, "Current Chapter", self)
+        self.currentChapterAction = QtWidgets.QAction(
+                QIcon(":/icons/current-chapter.png")
+                , "Current Chapter", self)
         self.addAction(self.currentChapterAction)
-        self.nextChapterAction = QtWidgets.QAction(icon, "Next Chapter", self)
+        self.nextChapterAction = QtWidgets.QAction(
+                QIcon(":/icons/next-chapter.png")
+                , "Next Chapter", self)
         self.addAction(self.nextChapterAction)
 
 
@@ -217,7 +221,7 @@ class ChapterMarkFile:
 
 class SystemTrayIcon(QSystemTrayIcon):
     def __init__(self, parent, show, titles, settingsdir):
-        QSystemTrayIcon.__init__(self, QIcon("res/book-clock.png"), parent)
+        QSystemTrayIcon.__init__(self, QIcon(":/icons/main.png"), parent)
         self.left_menu = LeftClickMenu()
         self.markers = ChapterMarkFile(show, titles, settingsdir)
         log.debug(self.markers)
@@ -227,13 +231,16 @@ class SystemTrayIcon(QSystemTrayIcon):
         # Right Click
         menu = QMenu(parent=None)
         self.setContextMenu(menu)
-        settingAction = menu.addAction(QIcon("res/book-clock.png"), "Reset and Restart")
-        settingAction.triggered.connect(self.reset)
 
-        settingAction = menu.addAction("save")
+        settingAction = menu.addAction(QIcon(":/icons/save.png"),"save")
         settingAction.triggered.connect(self.save)
 
-        settingAction = menu.addAction("exit")
+        settingAction = menu.addAction("---")
+
+        settingAction = menu.addAction(QIcon(":/icons/main.png"), "Reset and Restart")
+        settingAction.triggered.connect(self.reset)
+
+        settingAction = menu.addAction(QIcon(":/icons/exit.png"),"exit")
         settingAction.triggered.connect(self.exit)
 
         manager = KeyBoardManager(self)

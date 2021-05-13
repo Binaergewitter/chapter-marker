@@ -1,15 +1,19 @@
 #!/usr/bin/env python
-""" usage: bgt-get-titles [--out=FILE] [SHOW]
+""" usage: bgt-get-titles [options] [SHOW]
 
-requires PAD_APIKEY to be set
+options:
+    --out=FILE          file to output the titles to (default is stdout)
+    --apikey=KEY        The etherpad APIKEY
+
+requires either PAD_APIKEY to be set  or --apikey to be supplied
 
 returns the id of the next bgt show
 """
 
-# 'https://etherpad.euer.krebsco.de/api/1.2.15/getText?apikey=9lYFcvKX7udkrjxM03UMMBysn&padID=bgt275'
 import requests
 import urllib.request
 import os
+from docopt import docopt
 
 url = "https://etherpad.euer.krebsco.de/api/1.2.15/getText?apikey={}&padID={}"
 
@@ -21,10 +25,9 @@ def current_show():
 
 
 def main():
-    from docopt import docopt
 
     args = docopt(__doc__)
-    apikey = os.environ.get("PAD_APIKEY", None)
+    apikey = os.environ.get("PAD_APIKEY", args['--apikey'])
     show = args["SHOW"]
     out = args["--out"]
 

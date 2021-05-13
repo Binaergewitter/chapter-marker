@@ -1,0 +1,10 @@
+<RCC>
+    <qresource prefix="icons">
+        <file alias="main.png">res/book-clock.png</file>
+        <file alias="save.png">res/content-save.png</file>
+        <file alias="exit.png">res/exit-run.png</file>
+        <file alias="start-date.png">res/book.png</file>
+        <file alias="current-chapter.png">res/clock-start.png</file>
+        <file alias="next-chapter.png">res/skip-forward.png</file>
+    </qresource>
+</RCC>
