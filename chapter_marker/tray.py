@@ -308,7 +308,8 @@ def main():
     args = docopt(__doc__)
     settingsdir = expanduser(args["--settings-dir"])
 
-    if not args["SHOW"]:
+    show = args["SHOW"]
+    if not show:
         show = current_show()
 
     titles = [l.strip() for l in open(args["TITLEFILE"]).readlines()]
