@@ -1,0 +1,5 @@
+requests
+docopt
+pyqt5
+pynput
+notify2

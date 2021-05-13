@@ -16,4 +16,7 @@ pkgs.python3Packages.buildPythonPackage {
     vscode
     qtcreator
   ];
+  checkInputs = [
+    python3Packages.twine
+  ];
 }

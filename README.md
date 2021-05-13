@@ -1,63 +1,50 @@
 # Chapter-marker
 
-## EVERYTHING IS DIFFERENT NOW, sorry
-
 Write a chaptermark file for your podcast. The focus is the [binaergewitter podcast](https://blog.binaergewitter.de)
-Chapter-marker is to be used with hotkeys or with the sleep interval
+Chapter-marker is to be used with hotkeys.
 
-## Workflow
-
-```
-chapter-start   # wenn Ingo sagt "halli hallo und herzlich willkommen"
-chapter-mark  # text, welcher für die chapter mark verwendet werden soll markieren
-```
-
-## Hotkey in your window manager
-To achieve full potential of chapter-marker, make sure to add the tool as a
-hotkey to your window manager
-
-### AwesomeWM
-
-
-* `Ctrl-j`: start timer
-* `Ctrl-k`: add marker
-
-Add to your `rc.conf`:
-
-```lua
-globalkeys = awful.util.table.join(
-  ...
-  -- chapter-marker
-  awful.key({ "Control" }, "j", function () awful.spawn("/usr/bin/chapter-start") end,
-            {description = "start the chapter marker",}),
-  awful.key({ "Control" }, "k", function () awful.spawn("/usr/bin/chapter-mark") end,
-            {description = "create a chapter mark",}),
-  ...
-)
-root.keys(globalkeys)
-```
 
 ## Installation
 
+```bash
+pip install chapter-marker
+```
+
+## Workflow
+
+### For Binärgewitter
+```
+export PAD_APIKEY=<add-apikey-for-pad-here> 
+
+CURRENT_SHOW=$(bgt-current-show)
+showtitles="titles${CURRENT_SHOW}.lst"
+bgt-get-titles "${CURRENT_SHOW}" > "$showtitles"
+
+chapter-marker "$showtitles" "${CURRENT_SHOW}"
+# ctrl-u -> start the show at "H" of Hallihallo
+# ctrl-j -> next chapter
+# check by clicking left on the tray icon which is the next chapter
+
+# finish up the show by right clicking on the tray and choose [save] 
+# the chapter mark file is now stored at ~/.local/share/chapter-marker/${CURRENT_SHOW}_chapters.txt
+```
+
+## Development
+
 ### NixOS
 
-```nix
-environment.systemPackages = [ (pkgs.callPackage /here/default.nix {}) ];
-# or with nur
-environment.systemPackages = [ nur.repos.makefu.chapter-marker ];
+```bash
+nix-shell
+# or build and test the whole thing
+nix-build
+result/bin/chapter-marker
 ```
 
-Build manually:
-```bash
-nix-build -E 'with import <nixpkgs> {};pkgs.callPackage ./default.nix {}'
-result/bin/chapter-mark # run it
-```
 
 ### Legacy OS
-Please note that these installation instructions are untested and extremely
-fragile, you must use your own brain unfortunately.
 ```bash
-cp chapter-* /usr/bin/
-chmod 755 /usr/bin/chapter-*
-# also install xclip,libnotify somehow ¯\_( ͡° ͜ʖ ͡°)_/¯
+virtualenv -m venv .
+. bin/activate
+pip install -r Requirements.txt
+
 ```
