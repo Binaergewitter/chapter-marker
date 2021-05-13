@@ -1,5 +1,7 @@
 # Chapter-marker
 
+## EVERYTHING IS DIFFERENT NOW, sorry
+
 Write a chaptermark file for your podcast. The focus is the [binaergewitter podcast](https://blog.binaergewitter.de)
 Chapter-marker is to be used with hotkeys or with the sleep interval
 
