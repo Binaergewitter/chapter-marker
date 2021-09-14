@@ -48,3 +48,8 @@ virtualenv -m venv .
 pip install -r requirements.txt
 
 ```
+
+# License
+Source Code under MIT (see `License`)
+
+The Icons are Licensed under Apache 2.0 , from https://github.com/Templarian/MaterialDesign/
