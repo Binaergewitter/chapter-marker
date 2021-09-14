@@ -20,7 +20,9 @@ setup(
     package_data={'chapter_marker': ['res/*.png']},
     entry_points={"console_scripts": [
         "bgt-current-show = chapter_marker.bgt_current_show:main",
+        "bgt-replace-text = chapter_marker.bgt_replace_text:main",
         "bgt-get-titles = chapter_marker.bgt_get_titles:main",
+
         "chapter-marker = chapter_marker.tray:main",
     ]},
     classifiers=[
