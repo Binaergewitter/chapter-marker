@@ -21,8 +21,7 @@ showtitles="titles${CURRENT_SHOW}.lst"
 bgt-get-titles "${CURRENT_SHOW}" > "$showtitles"
 
 chapter-marker "$showtitles" "${CURRENT_SHOW}"
-# ctrl-u -> start the show at "H" of Hallihallo
-# ctrl-j -> next chapter
+# ctrl-j -> start the show at "H" of Hallihallo, also start next chapter
 # check by clicking left on the tray icon which is the next chapter
 
 # finish up the show by right clicking on the tray and choose [save] 
