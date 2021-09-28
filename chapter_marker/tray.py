@@ -245,7 +245,6 @@ class SystemTrayIcon(QSystemTrayIcon):
         settingAction.triggered.connect(self.exit)
 
         manager = KeyBoardManager(self)
-        manager.uSignal.connect(self.start_chaptermarks)
         manager.jSignal.connect(self.next_chapter)
         manager.start()
 
@@ -270,7 +269,9 @@ class SystemTrayIcon(QSystemTrayIcon):
         except:
             self.left_menu.nextChapterAction.setText(f"No next Chapter")
 
-    def start_chaptermarks(self):
+    def next_chapter(self):
+        log.info("Markers Status:")
+        log.info(self.markers)
         if self.markers.state == "preshow":
             self.markers.begin()
             text = (f"start show {self.markers.show} with follwing chapter marks planned:\n{self.markers}")
@@ -282,8 +283,7 @@ class SystemTrayIcon(QSystemTrayIcon):
             notify2.Notification(text).show()
             #print(self.markers)
 
-    def next_chapter(self):
-        if self.markers.begin_next():
+        elif self.markers.begin_next():
             notify2.Notification(f"Next Chapter: {self.markers.get_current().title}").show()
             log.info(f"next chapter {self.markers.get_current().title}")
         else:
