@@ -118,7 +118,7 @@ class ChapterMarkFile:
         self.initialize_chapters(titles)
 
     def reset(self):
-        """ clean up everything and start anew """
+        """ clean up everything and start a new show """
         self.active_chapter = 0
         self.__init__(self.show,self.initial_titles,self.location)
 
@@ -277,7 +277,7 @@ class SystemTrayIcon(QSystemTrayIcon):
             notify2.Notification(text).show()
             log.info(text)
         else:
-            text = "the show has already started, use the reset function to start anew"
+            text = "the show has already started, use the reset function to start a new show"
             log.warning(text)
             notify2.Notification(text).show()
             #print(self.markers)
