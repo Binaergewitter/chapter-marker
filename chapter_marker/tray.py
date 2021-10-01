@@ -4,6 +4,7 @@
 
 options:
     --settings-dir=DIR       The base directory of the chapter-marker [Default: ~/.local/share/chapter-marker]
+    --disable-notification   If set notify2 is disables which can help with dbus issues
 
 starts chapter-marker with the given TITLE and starts with the top entry of TITLEFILE
 if the chapter marker file for this SHOW already exists it will be backed up.
@@ -311,9 +312,19 @@ class SystemTrayIcon(QSystemTrayIcon):
 
 
 def main():
-    notify2.init("chapter-marker")
     args = docopt(__doc__)
     settingsdir = expanduser(args["--settings-dir"])
+    disable_notifications = args["--disable-notification"]
+    if not disable_notifications:
+        notify2.init("chapter-marker")
+    else:
+        class FakeNotify2():
+            def Notification(self, text):
+                return self
+            def show(self):
+                pass
+
+        notify2.Notification = FakeNotify2().Notification
 
     show = args["SHOW"]
     if not show:
