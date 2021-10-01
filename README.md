@@ -45,6 +45,6 @@ result/bin/chapter-marker
 ```bash
 virtualenv -m venv .
 . bin/activate
-pip install -r Requirements.txt
+pip install -r requirements.txt
 
 ```
