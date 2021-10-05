@@ -12,7 +12,6 @@ if the chapter marker file for this SHOW already exists it will be backed up.
 import sys, re
 from docopt import docopt
 from datetime import datetime,timedelta
-import notify2
 import requests
 from os.path import exists, join, expanduser
 import pickle
@@ -32,6 +31,11 @@ from PyQt5.QtWidgets import (
 from PyQt5.QtCore import QSize, pyqtSlot, Qt, QObject, pyqtSignal
 
 from pynput import keyboard
+
+try:
+    import notify2
+except ImportError:
+    import fakenotify2 as notify2
 
 now = datetime.now
 

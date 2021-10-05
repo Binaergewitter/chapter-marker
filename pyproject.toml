@@ -17,7 +17,8 @@ classifiers=[
    "Programming Language :: Python :: Implementation :: CPython",
 ]
 packages = [
-    { include = "chapter_marker" }
+    { include = "chapter_marker" },
+    { include = "fakenotify2" }
 ]
 include = ["res/*.png"]
 
