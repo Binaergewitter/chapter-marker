@@ -42,10 +42,8 @@ result/bin/chapter-marker
 
 ### Legacy OS
 ```bash
-virtualenv -m venv .
-. bin/activate
-pip install -r requirements.txt
-
+poetry install
+poetry run chapter-marker "$showtitles" "${CURRENT_SHOW}"
 ```
 
 # License

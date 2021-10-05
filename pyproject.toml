@@ -1,0 +1,39 @@
+[tool.poetry]
+name = "chapter-marker"
+version = "1.0.1"
+license = "MIT"
+repository = "https://github.com/Binaergewitter/chapter-marker"
+description = "chapter-marking utility"
+readme = "README.md"
+authors = ["Felix Richter <github@krebsco.de>"]
+maintainers = ["Felix Richter <github@krebsco.de>", "Fliiiix <hi@l33t.name>"]
+keywords = ["chapter marks", "podcast", "meta data"]
+classifiers=[
+   "Natural Language :: English",
+   "Operating System :: POSIX :: Linux",
+   "Development Status :: 3 - Alpha",
+   "Programming Language :: Python",
+   "Programming Language :: Python :: 3",
+   "Programming Language :: Python :: Implementation :: CPython",
+]
+packages = [
+    { include = "chapter_marker" }
+]
+include = ["res/*.png"]
+
+[tool.poetry.scripts]
+bgt-current-show = "chapter_marker.bgt_current_show:main"
+bgt-replace-text = "chapter_marker.bgt_replace_text:main"
+bgt-get-titles = "chapter_marker.bgt_get_titles:main"
+
+chapter-marker = "chapter_marker.tray:main"
+
+[tool.poetry.dependencies]
+requests = "*"
+docopt = "*"
+pyqt5 = "*"
+pynput = "*"
+notify2 = "*"
+
+[tool.poetry.dev-dependencies]
+
