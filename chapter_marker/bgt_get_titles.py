@@ -27,7 +27,7 @@ def current_show():
 def main():
 
     args = docopt(__doc__)
-    apikey = os.environ.get("PAD_APIKEY", args['--apikey'])
+    apikey = os.environ.get("PAD_APIKEY", args["--apikey"])
     show = args["SHOW"]
     out = args["--out"]
 
@@ -39,7 +39,7 @@ def main():
     try:
         ret = requests.get(url.format(apikey, show)).json()["data"]["text"]
     except:
-        print("for url:" + url.format(apikey,show))
+        print("for url:" + url.format(apikey, show))
         print(f"response: {requests.get(url.format(apikey,show))}")
     header = True
 

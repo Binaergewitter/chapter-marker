@@ -11,7 +11,7 @@ if the chapter marker file for this SHOW already exists it will be backed up.
 """
 import sys, re
 from docopt import docopt
-from datetime import datetime,timedelta
+from datetime import datetime, timedelta
 import requests
 from os.path import exists, join, expanduser
 import pickle
@@ -42,7 +42,7 @@ now = datetime.now
 import logging
 from . import resources
 
-log = logging.getLogger('chapter-tray')
+log = logging.getLogger("chapter-tray")
 
 logging.basicConfig(level=logging.INFO)
 
@@ -70,16 +70,15 @@ class LeftClickMenu(QtWidgets.QMenu):
     def __init__(self, parent=None):
         QtWidgets.QMenu.__init__(self, "File", parent)
 
-        self.dateAction =  QtWidgets.QAction(QIcon(":/icons/start-date.png"),
-                "Start Date", self)
+        self.dateAction = QtWidgets.QAction(QIcon(":/icons/start-date.png"), "Start Date", self)
         self.addAction(self.dateAction)
         self.currentChapterAction = QtWidgets.QAction(
-                QIcon(":/icons/current-chapter.png")
-                , "Current Chapter", self)
+            QIcon(":/icons/current-chapter.png"), "Current Chapter", self
+        )
         self.addAction(self.currentChapterAction)
         self.nextChapterAction = QtWidgets.QAction(
-                QIcon(":/icons/next-chapter.png")
-                , "Next Chapter", self)
+            QIcon(":/icons/next-chapter.png"), "Next Chapter", self
+        )
         self.addAction(self.nextChapterAction)
 
 
@@ -87,7 +86,7 @@ class ChapterEntry:
     def __init__(self, title, is_comment=False, delta=None):
         self.title = title
         self.is_comment = is_comment
-        self.delta = delta # timedelta
+        self.delta = delta  # timedelta
 
     def __str__(self):
 
@@ -98,7 +97,7 @@ class ChapterEntry:
         else:
             m, s = divmod(self.delta.seconds, 60)
             h, m = divmod(m, 60)
-            millis = round(self.delta.microseconds / 1000 )
+            millis = round(self.delta.microseconds / 1000)
             return f"{h:02}:{m:02}:{s:02}.{millis:03} {self.title}"
 
     def toSimpleElement(self):
@@ -124,7 +123,7 @@ class ChapterMarkFile:
     def reset(self):
         """ clean up everything and start a new show """
         self.active_chapter = 0
-        self.__init__(self.show,self.initial_titles,self.location)
+        self.__init__(self.show, self.initial_titles, self.location)
 
     def set_state(self, state):
         self.state = state
@@ -132,13 +131,13 @@ class ChapterMarkFile:
 
     def initialize_chapters(self, titles):
         # put "hallihallo" at the top
-        titles.insert(0,"Hallihallo und Herzlich Willkommen")
+        titles.insert(0, "Hallihallo und Herzlich Willkommen")
         self.storage = [ChapterEntry(title) for title in titles]
         self.active_chapter = 0
         self.add_comment(f"Preshow für '{self.show}' gestartet um {now().replace(microsecond=0)}")
         self.set_state("preshow")
 
-    def add_comment(self, text,before=True):
+    def add_comment(self, text, before=True):
         loc = self.active_chapter if before else self.active_chapter + 1
         log.info(f"Comment {'before' if before else 'after'}: {text}")
         notify2.Notification(text).show()
@@ -151,20 +150,22 @@ class ChapterMarkFile:
         self.start_date = now()
         self.set_state("show")
 
-        duration = self.timers['show'] - self.timers['preshow']
+        duration = self.timers["show"] - self.timers["preshow"]
         m, s = divmod(duration.seconds, 60)
         h, m = divmod(m, 60)
-        self.add_comment(f"Preshow ende um {self.start_date.replace(microsecond=0) } ({h:02}:{m:02}:{s:02} Vorgeplänkel)")
-        self.get_current().delta = timedelta(seconds=0);
+        self.add_comment(
+            f"Preshow ende um {self.start_date.replace(microsecond=0) } ({h:02}:{m:02}:{s:02} Vorgeplänkel)"
+        )
+        self.get_current().delta = timedelta(seconds=0)
 
     def end(self):
         log.info(f"Start Postshow at {now()}")
         self.set_state("postshow")
 
-        duration = self.timers['postshow'] - self.timers['show']
+        duration = self.timers["postshow"] - self.timers["show"]
         m, s = divmod(duration.seconds, 60)
         h, m = divmod(m, 60)
-        self.add_comment(f"Postshow beginnt um {now()} ({h:02}:{m:02}:{s:02} Show)",before=False)
+        self.add_comment(f"Postshow beginnt um {now()} ({h:02}:{m:02}:{s:02} Show)", before=False)
         log.debug(self)
 
     def get_current(self):
@@ -181,23 +182,20 @@ class ChapterMarkFile:
         if self.last_chapter():
             log.info("cannot go beyond last chapter")
             return False
-        elif self.state != 'show':
+        elif self.state != "show":
             log.info("Show has not started yet, start show first!")
             return False
-
 
         self.active_chapter += 1
         log.debug(f"Current Chapter: {self.active_chapter}, Total Chapters: {len(self.storage)}")
         active = self.get_current()
-        active.delta = now() - self.timers['show']
+        active.delta = now() - self.timers["show"]
 
         if self.last_chapter():
             log.info("at last chapter")
             self.end()
         # print(self)
         return True
-
-
 
     def persist(self):
         dbpath = join(self.location, self.show + ".db")
@@ -237,7 +235,7 @@ class SystemTrayIcon(QSystemTrayIcon):
         menu = QMenu(parent=None)
         self.setContextMenu(menu)
 
-        settingAction = menu.addAction(QIcon(":/icons/save.png"),"save")
+        settingAction = menu.addAction(QIcon(":/icons/save.png"), "save")
         settingAction.triggered.connect(self.save)
 
         settingAction = menu.addAction("---")
@@ -245,7 +243,7 @@ class SystemTrayIcon(QSystemTrayIcon):
         settingAction = menu.addAction(QIcon(":/icons/main.png"), "Reset and Restart")
         settingAction.triggered.connect(self.reset)
 
-        settingAction = menu.addAction(QIcon(":/icons/exit.png"),"exit")
+        settingAction = menu.addAction(QIcon(":/icons/exit.png"), "exit")
         settingAction.triggered.connect(self.exit)
 
         manager = KeyBoardManager(self)
@@ -261,13 +259,12 @@ class SystemTrayIcon(QSystemTrayIcon):
         log.info("Persisting Chaptermarks")
         self.markers.persist()
         sys.exit()
+
     def refresh_menu(self):
         self.left_menu.dateAction.setText(
             f"{self.markers.state} since {self.markers.timers[self.markers.state].replace(microsecond=0)}"
         )
-        self.left_menu.currentChapterAction.setText(
-            f"Current: {self.markers.get_current()}"
-        )
+        self.left_menu.currentChapterAction.setText(f"Current: {self.markers.get_current()}")
         try:
             self.left_menu.nextChapterAction.setText(f"Next: {self.markers.get_next().title}")
         except:
@@ -278,7 +275,7 @@ class SystemTrayIcon(QSystemTrayIcon):
         log.info(self.markers)
         if self.markers.state == "preshow":
             self.markers.begin()
-            text = (f"start show {self.markers.show} with follwing chapter marks planned:\n{self.markers}")
+            text = f"start show {self.markers.show} with follwing chapter marks planned:\n{self.markers}"
             notify2.Notification(text).show()
             log.info(text)
         elif self.markers.begin_next():
@@ -306,7 +303,7 @@ class SystemTrayIcon(QSystemTrayIcon):
         text = QApplication.clipboard().text()
         if type(text) != str:
             return
-        #print(text)
+        # print(text)
 
 
 def main():
@@ -316,9 +313,11 @@ def main():
     if not disable_notifications:
         notify2.init("chapter-marker")
     else:
-        class FakeNotify2():
+
+        class FakeNotify2:
             def Notification(self, text):
                 return self
+
             def show(self):
                 pass
 

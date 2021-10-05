@@ -29,7 +29,7 @@ def main():
     apikey = os.environ.get("PAD_APIKEY", None)
     if not apikey:
         print("PAD_APIKEY is not set, falling back to --apikey")
-        apikey = args['--apikey']
+        apikey = args["--apikey"]
 
     show = args["SHOW"]
 
@@ -40,16 +40,15 @@ def main():
         show = current_show()
     try:
         print(f"Fetching show {show}")
-        text = requests.get(baseurl.format("getText",apikey, show)).json()["data"]["text"]
+        text = requests.get(baseurl.format("getText", apikey, show)).json()["data"]["text"]
         print(f"replacing <SENDUNGSNUMMER> with {show.upper()}")
-        text = text.replace("<SENDUNGSNUMMER>",show.upper())
+        text = text.replace("<SENDUNGSNUMMER>", show.upper())
         print("updating shownotes")
-        ret = requests.post(baseurl.format("setText",apikey, show),data={"text":text})
+        ret = requests.post(baseurl.format("setText", apikey, show), data={"text": text})
     except:
-        print("for url:" + url.format(apikey,show))
+        print("for url:" + url.format(apikey, show))
         print(f"response: {requests.get(url.format(apikey,show))}")
     header = True
-
 
 
 if __name__ == "__main__":
