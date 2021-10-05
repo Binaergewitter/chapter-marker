@@ -281,12 +281,6 @@ class SystemTrayIcon(QSystemTrayIcon):
             text = (f"start show {self.markers.show} with follwing chapter marks planned:\n{self.markers}")
             notify2.Notification(text).show()
             log.info(text)
-        else:
-            text = "the show has already started, use the reset function to start a new show"
-            log.warning(text)
-            notify2.Notification(text).show()
-            #print(self.markers)
-
         elif self.markers.begin_next():
             notify2.Notification(f"Next Chapter: {self.markers.get_current().title}").show()
             log.info(f"next chapter {self.markers.get_current().title}")
