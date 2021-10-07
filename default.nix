@@ -16,6 +16,7 @@ pkgs.python3Packages.buildPythonPackage {
     vscode
     qtcreator
   ];
+  nativeBuildInputs = [ poetry ];
   checkInputs = [
     python3Packages.twine
   ];
