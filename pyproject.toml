@@ -34,7 +34,7 @@ python = ">=3.6"
 requests = "*"
 docopt = "*"
 pyqt5 = "*"
-#pynput = "*"
+pynput = "*"
 notify2 = "*"
 
 [tool.poetry.dev-dependencies]
