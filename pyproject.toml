@@ -38,12 +38,15 @@ pynput = "*"
 notify2 = "*"
 
 [tool.poetry.dev-dependencies]
-black = "*"
-flake8 = "*"
+pyproject-flake8 = "*"
+flake8-black = "*"
 pep8-naming = "*"
 
 [tool.black]
 line-length = 100
+
+[tool.flake8]
+max-line-length = 100
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
