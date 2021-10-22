@@ -242,7 +242,7 @@ class SystemTrayIcon(QSystemTrayIcon):
         try:
             self.left_menu.nextChapterAction.setText(f"Next: {self.markers.get_next().title}")
         except:
-            self.left_menu.nextChapterAction.setText(f"No next Chapter")
+            self.left_menu.nextChapterAction.setText("No next Chapter")
 
     def next_chapter(self):
         log.info("Markers Status:")
@@ -256,8 +256,8 @@ class SystemTrayIcon(QSystemTrayIcon):
             notify2.Notification(f"Next Chapter: {self.markers.get_current().title}").show()
             log.info(f"next chapter {self.markers.get_current().title}")
         else:
-            log.info(f"Cannot move to next chapter")
-            notify2.Notification(f"Cannot move to next Chapter").show()
+            log.info("Cannot move to next chapter")
+            notify2.Notification("Cannot move to next Chapter").show()
 
     def left_click(self, value):
         self.refresh_menu()
