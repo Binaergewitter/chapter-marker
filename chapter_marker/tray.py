@@ -18,7 +18,6 @@ from os.path import expanduser, join
 from docopt import docopt
 from pynput import keyboard
 from PyQt5 import QtGui, QtWidgets
-from PyQt5.Qt import QApplication
 from PyQt5.QtCore import QObject, pyqtSignal
 from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QMenu, QSystemTrayIcon
@@ -46,11 +45,11 @@ def current_show():
 
 
 class KeyBoardManager(QObject):
-    jSignal = pyqtSignal()
-    uSignal = pyqtSignal()
+    j_signal = pyqtSignal()
+    u_signal = pyqtSignal()
 
     def start(self):
-        self.hotkeys = keyboard.GlobalHotKeys({"<ctrl>+j": self.jSignal.emit, "<ctrl>+u": self.uSignal.emit})
+        self.hotkeys = keyboard.GlobalHotKeys({"<ctrl>+j": self.j_signal.emit, "<ctrl>+u": self.u_signal.emit})
         self.hotkeys.start()
 
 
@@ -84,7 +83,7 @@ class ChapterEntry:
             millis = round(self.delta.microseconds / 1000)
             return f"{h:02}:{m:02}:{s:02}.{millis:03} {self.title}"
 
-    def toSimpleElement(self):
+    def to_simple_element(self):
         raise NotImplementedError("sorry")
 
 
@@ -217,25 +216,20 @@ class SystemTrayIcon(QSystemTrayIcon):
         menu = QMenu(parent=None)
         self.setContextMenu(menu)
 
-        settingAction = menu.addAction(QIcon(":/icons/save.png"), "save")
-        settingAction.triggered.connect(self.save)
+        setting_action = menu.addAction(QIcon(":/icons/save.png"), "save")
+        setting_action.triggered.connect(self.save)
 
-        settingAction = menu.addAction("---")
+        setting_action = menu.addAction("---")
 
-        settingAction = menu.addAction(QIcon(":/icons/main.png"), "Reset and Restart")
-        settingAction.triggered.connect(self.reset)
+        setting_action = menu.addAction(QIcon(":/icons/main.png"), "Reset and Restart")
+        setting_action.triggered.connect(self.reset)
 
-        settingAction = menu.addAction(QIcon(":/icons/exit.png"), "exit")
-        settingAction.triggered.connect(self.exit)
+        setting_action = menu.addAction(QIcon(":/icons/exit.png"), "exit")
+        setting_action.triggered.connect(self.exit)
 
         manager = KeyBoardManager(self)
-        manager.jSignal.connect(self.next_chapter)
+        manager.j_signal.connect(self.next_chapter)
         manager.start()
-
-        # clipboard handling
-        # QApplication.clipboard().dataChanged.connect(self.clipboardChanged)
-
-        # shortcuts
 
     def exit(self):
         log.info("Persisting Chaptermarks")
@@ -278,13 +272,6 @@ class SystemTrayIcon(QSystemTrayIcon):
     def save(self):
         self.markers.persist()
 
-    # Get the system clipboard contents
-    def clipboardChanged(self):
-        text = QApplication.clipboard().text()
-        if type(text) != str:
-            return
-        # print(text)
-
 
 def main():
     args = docopt(__doc__)
@@ -295,7 +282,7 @@ def main():
     else:
 
         class FakeNotify2:
-            def Notification(self, text):
+            def Notification(self, text):  # noqa N802
                 return self
 
             def show(self):
