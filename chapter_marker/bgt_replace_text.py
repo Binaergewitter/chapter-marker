@@ -45,11 +45,10 @@ def main():
         print(f"replacing <SENDUNGSNUMMER> with {show.upper()}")
         text = text.replace("<SENDUNGSNUMMER>", show.upper())
         print("updating shownotes")
-        ret = requests.post(baseurl.format("setText", apikey, show), data={"text": text})
-    except:
-        print("for url:" + url.format(apikey, show))
-        print(f"response: {requests.get(url.format(apikey,show))}")
-    header = True
+        requests.post(baseurl.format("setText", apikey, show), data={"text": text})
+    except:  # noqa E722
+        print(f"for url: {baseurl.format(apikey, show)}")
+        print(f"response: {requests.get(baseurl.format(apikey,show))}")
 
 
 if __name__ == "__main__":
