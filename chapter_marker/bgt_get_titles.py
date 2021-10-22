@@ -38,7 +38,9 @@ def main():
         show = current_show()
     try:
         ret = requests.get(url.format(apikey, show)).json()["data"]["text"]
-    except:
+    except:  # noqa E722
+        # way to complicated to do right:
+        # https://stackoverflow.com/questions/16511337
         print("for url:" + url.format(apikey, show))
         print(f"response: {requests.get(url.format(apikey,show))}")
     header = True
