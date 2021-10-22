@@ -1,0 +1,37 @@
+name: ci
+on: [push]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      max-parallel: 4
+      matrix:
+        python-version: [3.6, 3.7, 3.8, 3.9, "3.10"]
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v1
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install poetry==1.1.11
+          python -m poetry install
+
+      - name: run backend linter
+        run: |
+          python -m poetry run pflake8 chapter_marker
+
+      - name: build and install
+        run: |
+          python -m poetry build
+          python -m poetry install
+
+      - name: run chapter-marker
+        uses: GabrielBB/xvfb-action@v1
+        with:
+          run: python -m poetry run chapter-marker --help
