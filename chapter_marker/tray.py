@@ -23,7 +23,7 @@ from PyQt5.QtCore import QObject, pyqtSignal
 from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QMenu, QSystemTrayIcon
 
-from . import resources # noqa F401
+from . import resources  # noqa F401
 
 try:
     import notify2
@@ -85,7 +85,7 @@ class ChapterEntry:
             return f"{h:02}:{m:02}:{s:02}.{millis:03} {self.title}"
 
     def toSimpleElement(self):
-        raise NotImplemented("sorry")
+        raise NotImplementedError("sorry")
 
 
 states = ["preshow", "show", "postshow"]
