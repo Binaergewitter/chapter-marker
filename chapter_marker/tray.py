@@ -307,7 +307,7 @@ def main():
     if not show:
         show = current_show()
 
-    titles = [l.strip() for l in open(args["TITLEFILE"]).readlines()]
+    titles = [line.strip() for line in open(args["TITLEFILE"]).readlines()]
 
     app = QtWidgets.QApplication([])  # can also take sys.argv
     tray = SystemTrayIcon(app, show, titles, settingsdir)
