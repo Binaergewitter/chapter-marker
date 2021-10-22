@@ -44,10 +44,10 @@ flake8-isort = "*"
 pep8-naming = "*"
 
 [tool.black]
-line-length = 100
+line-length = 140
 
 [tool.flake8]
-max-line-length = 100
+max-line-length = 140
 
 [tool.isort]
 multi_line_output = 3

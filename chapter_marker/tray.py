@@ -50,9 +50,7 @@ class KeyBoardManager(QObject):
     uSignal = pyqtSignal()
 
     def start(self):
-        self.hotkeys = keyboard.GlobalHotKeys(
-            {"<ctrl>+j": self.jSignal.emit, "<ctrl>+u": self.uSignal.emit}
-        )
+        self.hotkeys = keyboard.GlobalHotKeys({"<ctrl>+j": self.jSignal.emit, "<ctrl>+u": self.uSignal.emit})
         self.hotkeys.start()
 
 
@@ -62,13 +60,9 @@ class LeftClickMenu(QtWidgets.QMenu):
 
         self.dateAction = QtWidgets.QAction(QIcon(":/icons/start-date.png"), "Start Date", self)
         self.addAction(self.dateAction)
-        self.currentChapterAction = QtWidgets.QAction(
-            QIcon(":/icons/current-chapter.png"), "Current Chapter", self
-        )
+        self.currentChapterAction = QtWidgets.QAction(QIcon(":/icons/current-chapter.png"), "Current Chapter", self)
         self.addAction(self.currentChapterAction)
-        self.nextChapterAction = QtWidgets.QAction(
-            QIcon(":/icons/next-chapter.png"), "Next Chapter", self
-        )
+        self.nextChapterAction = QtWidgets.QAction(QIcon(":/icons/next-chapter.png"), "Next Chapter", self)
         self.addAction(self.nextChapterAction)
 
 
@@ -143,9 +137,7 @@ class ChapterMarkFile:
         duration = self.timers["show"] - self.timers["preshow"]
         m, s = divmod(duration.seconds, 60)
         h, m = divmod(m, 60)
-        self.add_comment(
-            f"Preshow ende um {self.start_date.replace(microsecond=0) } ({h:02}:{m:02}:{s:02} Vorgeplänkel)"
-        )
+        self.add_comment(f"Preshow ende um {self.start_date.replace(microsecond=0) } ({h:02}:{m:02}:{s:02} Vorgeplänkel)")
         self.get_current().delta = timedelta(seconds=0)
 
     def end(self):
@@ -251,9 +243,7 @@ class SystemTrayIcon(QSystemTrayIcon):
         sys.exit()
 
     def refresh_menu(self):
-        self.left_menu.dateAction.setText(
-            f"{self.markers.state} since {self.markers.timers[self.markers.state].replace(microsecond=0)}"
-        )
+        self.left_menu.dateAction.setText(f"{self.markers.state} since {self.markers.timers[self.markers.state].replace(microsecond=0)}")
         self.left_menu.currentChapterAction.setText(f"Current: {self.markers.get_current()}")
         try:
             self.left_menu.nextChapterAction.setText(f"Next: {self.markers.get_next().title}")
