@@ -10,9 +10,10 @@ requires either PAD_APIKEY to be set  or --apikey to be supplied
 returns the id of the next bgt show
 """
 
-import requests
-import urllib.request
 import os
+import urllib.request
+
+import requests
 from docopt import docopt
 
 url = "https://etherpad.euer.krebsco.de/api/1.2.15/getText?apikey={}&padID={}"

@@ -9,41 +9,31 @@ options:
 starts chapter-marker with the given TITLE and starts with the top entry of TITLEFILE
 if the chapter marker file for this SHOW already exists it will be backed up.
 """
-import sys, re
-from docopt import docopt
-from datetime import datetime, timedelta
-import requests
-from os.path import exists, join, expanduser
+import logging
 import pickle
-from PyQt5.Qt import QApplication, QClipboard
-from PyQt5.QtGui import QIcon, QKeySequence
-from PyQt5 import QtCore, QtWidgets, QtGui
-from PyQt5.QtWidgets import (
-    QMainWindow,
-    QWidget,
-    QPlainTextEdit,
-    QPushButton,
-    QSystemTrayIcon,
-    QMenu,
-    QDialog,
-    QShortcut,
-)
-from PyQt5.QtCore import QSize, pyqtSlot, Qt, QObject, pyqtSignal
+import sys
+from datetime import datetime, timedelta
+from os.path import expanduser, join
 
+from docopt import docopt
 from pynput import keyboard
+from PyQt5 import QtGui, QtWidgets
+from PyQt5.Qt import QApplication
+from PyQt5.QtCore import QObject, pyqtSignal
+from PyQt5.QtGui import QIcon
+from PyQt5.QtWidgets import QMenu, QSystemTrayIcon
+
+from . import resources # noqa F401
 
 try:
     import notify2
 except ImportError:
     import fakenotify2 as notify2
 
+
 now = datetime.now
 
-import logging
-from . import resources
-
 log = logging.getLogger("chapter-tray")
-
 logging.basicConfig(level=logging.INFO)
 
 
