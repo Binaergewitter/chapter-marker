@@ -48,6 +48,7 @@ line-length = 140
 
 [tool.flake8]
 max-line-length = 140
+exclude = "chapter_marker/resources.py"
 
 [tool.isort]
 multi_line_output = 3
