@@ -1,5 +1,5 @@
 #!/usr/bin/env nix-shell
-#!nix-shell -p python3Packages.docopt python3Packages.pyqt5 python3Packages.notify2 python3Packages.requests qt5.qtbase -i python3
+#!nix-shell -p python3Packages.docopt python3Packages.pyqt5 python3Packages.notify2 python3Packages.requests qt5.qtbase -i python3 # noqa
 """ usage: chapter-marker [options] TITLEFILE [SHOW]
 
 options:
@@ -241,7 +241,7 @@ class SystemTrayIcon(QSystemTrayIcon):
         self.left_menu.currentChapterAction.setText(f"Current: {self.markers.get_current()}")
         try:
             self.left_menu.nextChapterAction.setText(f"Next: {self.markers.get_next().title}")
-        except:
+        except:  # noqa E722
             self.left_menu.nextChapterAction.setText("No next Chapter")
 
     def next_chapter(self):
