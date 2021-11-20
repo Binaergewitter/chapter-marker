@@ -1,3 +1,6 @@
 __pycache__
 *.lst
 dist
+doit.sh
+result
+UNKNOWN.egg-info

@@ -1,5 +1,5 @@
 #!/usr/bin/env nix-shell
-#!nix-shell -p python3Packages.docopt python3Packages.pyqt5 python3Packages.notify2 python3Packages.requests qt5.qtbase -i python3
+#!nix-shell -p python3Packages.docopt python3Packages.pyqt5 python3Packages.notify2 python3Packages.requests qt5.qtbase -i python3 # noqa
 """ usage: chapter-marker [options] TITLEFILE [SHOW]
 
 options:
@@ -9,41 +9,30 @@ options:
 starts chapter-marker with the given TITLE and starts with the top entry of TITLEFILE
 if the chapter marker file for this SHOW already exists it will be backed up.
 """
-import sys, re
-from docopt import docopt
-from datetime import datetime, timedelta
-import requests
-from os.path import exists, join, expanduser
+import logging
 import pickle
-from PyQt5.Qt import QApplication, QClipboard
-from PyQt5.QtGui import QIcon, QKeySequence
-from PyQt5 import QtCore, QtWidgets, QtGui
-from PyQt5.QtWidgets import (
-    QMainWindow,
-    QWidget,
-    QPlainTextEdit,
-    QPushButton,
-    QSystemTrayIcon,
-    QMenu,
-    QDialog,
-    QShortcut,
-)
-from PyQt5.QtCore import QSize, pyqtSlot, Qt, QObject, pyqtSignal
+import sys
+from datetime import datetime, timedelta
+from os.path import expanduser, join
 
+from docopt import docopt
 from pynput import keyboard
+from PyQt5 import QtGui, QtWidgets
+from PyQt5.QtCore import QObject, pyqtSignal
+from PyQt5.QtGui import QIcon
+from PyQt5.QtWidgets import QMenu, QSystemTrayIcon
+
+from . import resources  # noqa F401
 
 try:
     import notify2
 except ImportError:
     import fakenotify2 as notify2
 
+
 now = datetime.now
 
-import logging
-from . import resources
-
 log = logging.getLogger("chapter-tray")
-
 logging.basicConfig(level=logging.INFO)
 
 
@@ -56,13 +45,11 @@ def current_show():
 
 
 class KeyBoardManager(QObject):
-    jSignal = pyqtSignal()
-    uSignal = pyqtSignal()
+    j_signal = pyqtSignal()
+    u_signal = pyqtSignal()
 
     def start(self):
-        self.hotkeys = keyboard.GlobalHotKeys(
-            {"<ctrl>+j": self.jSignal.emit, "<ctrl>+u": self.uSignal.emit}
-        )
+        self.hotkeys = keyboard.GlobalHotKeys({"<ctrl>+j": self.j_signal.emit, "<ctrl>+u": self.u_signal.emit})
         self.hotkeys.start()
 
 
@@ -72,13 +59,9 @@ class LeftClickMenu(QtWidgets.QMenu):
 
         self.dateAction = QtWidgets.QAction(QIcon(":/icons/start-date.png"), "Start Date", self)
         self.addAction(self.dateAction)
-        self.currentChapterAction = QtWidgets.QAction(
-            QIcon(":/icons/current-chapter.png"), "Current Chapter", self
-        )
+        self.currentChapterAction = QtWidgets.QAction(QIcon(":/icons/current-chapter.png"), "Current Chapter", self)
         self.addAction(self.currentChapterAction)
-        self.nextChapterAction = QtWidgets.QAction(
-            QIcon(":/icons/next-chapter.png"), "Next Chapter", self
-        )
+        self.nextChapterAction = QtWidgets.QAction(QIcon(":/icons/next-chapter.png"), "Next Chapter", self)
         self.addAction(self.nextChapterAction)
 
 
@@ -100,8 +83,8 @@ class ChapterEntry:
             millis = round(self.delta.microseconds / 1000)
             return f"{h:02}:{m:02}:{s:02}.{millis:03} {self.title}"
 
-    def toSimpleElement(self):
-        raise NotImplemented("sorry")
+    def to_simple_element(self):
+        raise NotImplementedError("sorry")
 
 
 states = ["preshow", "show", "postshow"]
@@ -153,9 +136,7 @@ class ChapterMarkFile:
         duration = self.timers["show"] - self.timers["preshow"]
         m, s = divmod(duration.seconds, 60)
         h, m = divmod(m, 60)
-        self.add_comment(
-            f"Preshow ende um {self.start_date.replace(microsecond=0) } ({h:02}:{m:02}:{s:02} Vorgeplänkel)"
-        )
+        self.add_comment(f"Preshow ende um {self.start_date.replace(microsecond=0) } ({h:02}:{m:02}:{s:02} Vorgeplänkel)")
         self.get_current().delta = timedelta(seconds=0)
 
     def end(self):
@@ -235,25 +216,20 @@ class SystemTrayIcon(QSystemTrayIcon):
         menu = QMenu(parent=None)
         self.setContextMenu(menu)
 
-        settingAction = menu.addAction(QIcon(":/icons/save.png"), "save")
-        settingAction.triggered.connect(self.save)
+        setting_action = menu.addAction(QIcon(":/icons/save.png"), "save")
+        setting_action.triggered.connect(self.save)
 
-        settingAction = menu.addAction("---")
+        setting_action = menu.addAction("---")
 
-        settingAction = menu.addAction(QIcon(":/icons/main.png"), "Reset and Restart")
-        settingAction.triggered.connect(self.reset)
+        setting_action = menu.addAction(QIcon(":/icons/main.png"), "Reset and Restart")
+        setting_action.triggered.connect(self.reset)
 
-        settingAction = menu.addAction(QIcon(":/icons/exit.png"), "exit")
-        settingAction.triggered.connect(self.exit)
+        setting_action = menu.addAction(QIcon(":/icons/exit.png"), "exit")
+        setting_action.triggered.connect(self.exit)
 
         manager = KeyBoardManager(self)
-        manager.jSignal.connect(self.next_chapter)
+        manager.j_signal.connect(self.next_chapter)
         manager.start()
-
-        # clipboard handling
-        # QApplication.clipboard().dataChanged.connect(self.clipboardChanged)
-
-        # shortcuts
 
     def exit(self):
         log.info("Persisting Chaptermarks")
@@ -261,14 +237,12 @@ class SystemTrayIcon(QSystemTrayIcon):
         sys.exit()
 
     def refresh_menu(self):
-        self.left_menu.dateAction.setText(
-            f"{self.markers.state} since {self.markers.timers[self.markers.state].replace(microsecond=0)}"
-        )
+        self.left_menu.dateAction.setText(f"{self.markers.state} since {self.markers.timers[self.markers.state].replace(microsecond=0)}")
         self.left_menu.currentChapterAction.setText(f"Current: {self.markers.get_current()}")
         try:
             self.left_menu.nextChapterAction.setText(f"Next: {self.markers.get_next().title}")
-        except:
-            self.left_menu.nextChapterAction.setText(f"No next Chapter")
+        except:  # noqa E722
+            self.left_menu.nextChapterAction.setText("No next Chapter")
 
     def next_chapter(self):
         log.info("Markers Status:")
@@ -282,8 +256,8 @@ class SystemTrayIcon(QSystemTrayIcon):
             notify2.Notification(f"Next Chapter: {self.markers.get_current().title}").show()
             log.info(f"next chapter {self.markers.get_current().title}")
         else:
-            log.info(f"Cannot move to next chapter")
-            notify2.Notification(f"Cannot move to next Chapter").show()
+            log.info("Cannot move to next chapter")
+            notify2.Notification("Cannot move to next Chapter").show()
 
     def left_click(self, value):
         self.refresh_menu()
@@ -298,13 +272,6 @@ class SystemTrayIcon(QSystemTrayIcon):
     def save(self):
         self.markers.persist()
 
-    # Get the system clipboard contents
-    def clipboardChanged(self):
-        text = QApplication.clipboard().text()
-        if type(text) != str:
-            return
-        # print(text)
-
 
 def main():
     args = docopt(__doc__)
@@ -315,7 +282,7 @@ def main():
     else:
 
         class FakeNotify2:
-            def Notification(self, text):
+            def Notification(self, text):  # noqa N802
                 return self
 
             def show(self):
@@ -327,7 +294,7 @@ def main():
     if not show:
         show = current_show()
 
-    titles = [l.strip() for l in open(args["TITLEFILE"]).readlines()]
+    titles = [line.strip() for line in open(args["TITLEFILE"]).readlines()]
 
     app = QtWidgets.QApplication([])  # can also take sys.argv
     tray = SystemTrayIcon(app, show, titles, settingsdir)
