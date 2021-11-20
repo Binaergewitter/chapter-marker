@@ -49,4 +49,4 @@ poetry run chapter-marker "$showtitles" "${CURRENT_SHOW}"
 # License
 Source Code under MIT (see `License`)
 
-The Icons are Licensed under Apache 2.0 , from https://github.com/Templarian/MaterialDesign/
+The Icons are Licensed under Apache 2.0, from https://github.com/Templarian/MaterialDesign/
