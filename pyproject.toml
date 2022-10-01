@@ -30,7 +30,9 @@ bgt-get-titles = "chapter_marker.bgt_get_titles:main"
 chapter-marker = "chapter_marker.tray:main"
 
 [tool.poetry.dependencies]
-python = ">=3.7"
+# ^ is shorthand for >=3.X, <4
+# https://github.com/python-poetry/poetry/issues/1013#issuecomment-479511436
+python = "^3.7"
 requests = "*"
 docopt = "*"
 pyqt5 = "*"
