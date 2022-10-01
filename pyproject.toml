@@ -41,6 +41,7 @@ notify2 = "*"
 pyproject-flake8 = "*"
 flake8-black = "*"
 flake8-isort = "*"
+toml = "*"
 pep8-naming = "*"
 
 [tool.black]
