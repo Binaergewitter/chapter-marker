@@ -30,7 +30,7 @@ bgt-get-titles = "chapter_marker.bgt_get_titles:main"
 chapter-marker = "chapter_marker.tray:main"
 
 [tool.poetry.dependencies]
-python = ">=3.6"
+python = ">=3.7"
 requests = "*"
 docopt = "*"
 pyqt5 = "*"
