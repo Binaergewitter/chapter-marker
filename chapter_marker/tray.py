@@ -104,7 +104,7 @@ class ChapterMarkFile:
         self.initialize_chapters(titles)
 
     def reset(self):
-        """ clean up everything and start a new show """
+        """clean up everything and start a new show"""
         self.active_chapter = 0
         self.__init__(self.show, self.initial_titles, self.location)
 
@@ -159,7 +159,7 @@ class ChapterMarkFile:
         return self.active_chapter == len(self.storage) - 1
 
     def begin_next(self) -> bool:
-        """ moves to the next chapter, returns false if this was not possible, else true"""
+        """moves to the next chapter, returns false if this was not possible, else true"""
         if self.last_chapter():
             log.info("cannot go beyond last chapter")
             return False
