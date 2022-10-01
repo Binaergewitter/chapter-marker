@@ -41,6 +41,14 @@ result/bin/chapter-marker
 
 
 ### Legacy OS
+
+Requires python headers:
+
+```bash
+sudo dnf install python3-devel
+sudo apt install python3-dev
+```
+
 ```bash
 poetry install
 poetry run chapter-marker "$showtitles" "${CURRENT_SHOW}"
