@@ -32,7 +32,7 @@ chapter-marker = "chapter_marker.tray:main"
 [tool.poetry.dependencies]
 # ^ is shorthand for >=3.X, <4
 # https://github.com/python-poetry/poetry/issues/1013#issuecomment-479511436
-python = "^3.7"
+python = "^3.8"
 requests = "*"
 docopt = "*"
 pyqt5 = "*"
