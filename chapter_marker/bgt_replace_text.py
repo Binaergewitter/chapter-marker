@@ -25,7 +25,6 @@ def current_show():
 
 
 def main():
-
     args = docopt(__doc__)
     apikey = os.environ.get("PAD_APIKEY", None)
     if not apikey:

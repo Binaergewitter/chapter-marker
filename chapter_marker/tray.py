@@ -72,7 +72,6 @@ class ChapterEntry:
         self.delta = delta  # timedelta
 
     def __str__(self):
-
         if self.is_comment:
             return "# " + self.title
         elif self.delta is None:
