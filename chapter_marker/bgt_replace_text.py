@@ -10,6 +10,7 @@ returns the id of the next bgt show
 """
 
 import os
+import sys
 import urllib.request
 
 import requests
@@ -25,7 +26,6 @@ def current_show():
 
 
 def main():
-
     args = docopt(__doc__)
     apikey = os.environ.get("PAD_APIKEY", None)
     if not apikey:
@@ -36,7 +36,7 @@ def main():
 
     if not apikey:
         print(__doc__)
-        exit(1)
+        sys.exit(1)
     if not show:
         show = current_show()
     try:
