@@ -40,18 +40,15 @@ pynput = "*"
 notify2 = "*"
 
 [tool.poetry.dev-dependencies]
-pyproject-flake8 = "*"
-flake8-black = "*"
-flake8-isort = "*"
-toml = "*"
-pep8-naming = "*"
+ruff = "*"
+black = "*"
 
 [tool.black]
 line-length = 140
 
-[tool.flake8]
-max-line-length = 140
-exclude = "chapter_marker/resources.py"
+[tool.ruff]
+line-length = 140
+select = ["I", "E", "B", "F", "W", "C90", "PLR", "ARG", "PL", "RUF"]
 
 [tool.isort]
 multi_line_output = 3

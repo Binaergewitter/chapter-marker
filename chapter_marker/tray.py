@@ -1,5 +1,5 @@
 #!/usr/bin/env nix-shell
-#!nix-shell -p python3Packages.docopt python3Packages.pyqt5 python3Packages.notify2 python3Packages.requests qt5.qtbase -i python3 # noqa
+#!nix-shell -p python3Packages.docopt python3Packages.pyqt5 python3Packages.notify2 python3Packages.requests qt5.qtbase -i python3
 """ usage: chapter-marker [options] TITLEFILE [SHOW]
 
 options:

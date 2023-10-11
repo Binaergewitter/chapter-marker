@@ -24,7 +24,7 @@ jobs:
 
       - name: run backend linter
         run: |
-          python -m poetry run pflake8 chapter_marker
+          python -m poetry run ruff check chapter_marker
 
       - name: build and install
         run: |
